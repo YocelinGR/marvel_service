@@ -3,5 +3,4 @@ defmodule MarvelService.Fixtures do
   This module defines operations to interact with db.
   Must be used as helpers for tests
   """
-
 end

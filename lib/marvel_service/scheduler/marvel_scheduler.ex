@@ -11,6 +11,5 @@ defmodule MarvelService.Scheduler.MarvelScheduler do
   """
   @spec sync_main_hero_information(DateTime.t(), String.t()) :: {integer(), nil}
   def sync_main_hero_information(datetime, time_zone) do
-
   end
 end

@@ -6,21 +6,20 @@ defmodule MarvelService.Application do
   use Application
 
   def start(_type, _args) do
-    children =
-      [
-        # Start the Ecto repository
-        MarvelService.Repo,
-        # Start the Telemetry supervisor
-        MarvelServiceWeb.Telemetry,
-        # Start the PubSub system
-        {Phoenix.PubSub, name: MarvelService.PubSub},
-        # Start the Endpoint (http/https)
-        MarvelServiceWeb.Endpoint,
-        # Start business management scheduler
-        MarvelService.Scheduler
-        # Start a worker by calling: MarvelService.Worker.start_link(arg)
-        # {MarvelService.Worker, arg}
-      ]
+    children = [
+      # Start the Ecto repository
+      MarvelService.Repo,
+      # Start the Telemetry supervisor
+      MarvelServiceWeb.Telemetry,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: MarvelService.PubSub},
+      # Start the Endpoint (http/https)
+      MarvelServiceWeb.Endpoint,
+      # Start business management scheduler
+      MarvelService.Scheduler
+      # Start a worker by calling: MarvelService.Worker.start_link(arg)
+      # {MarvelService.Worker, arg}
+    ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
