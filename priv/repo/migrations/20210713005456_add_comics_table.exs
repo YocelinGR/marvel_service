@@ -7,7 +7,6 @@ defmodule MarvelService.Repo.Migrations.AddComicsTable do
       add :name, :string, null: false
       add :number, :integer, null: true
 
-
       timestamps()
     end
 

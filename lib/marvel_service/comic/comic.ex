@@ -14,8 +14,7 @@ defmodule MarvelService.Comic.Comic do
     field :number, :integer
 
     has_many :creator, Creator, foreign_key: :comic_id
-    many_to_many :heros_comics, HerosComics,
-      join_through: "heros_comics"
+    many_to_many :heros_comics, HerosComics, join_through: "heros_comics"
 
     timestamps()
   end

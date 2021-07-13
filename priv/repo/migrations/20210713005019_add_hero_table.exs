@@ -10,7 +10,6 @@ defmodule MarvelService.Repo.Migrations.AddHeroTable do
       add :last_sync, :utc_datetime, null: false
       add :comics_amount, :integer, null: false
 
-
       timestamps()
     end
 
