@@ -184,7 +184,7 @@ defmodule MarvelService.Creator do
           {:ok, Creator.t()} | {:error, Ecto.Changeset.t()}
   def create_creator(attrs \\ %{}) do
     %Creator{}
-    |> Comic.changeset(attrs)
+    |> Creator.changeset(attrs)
     |> Repo.insert()
   end
 
