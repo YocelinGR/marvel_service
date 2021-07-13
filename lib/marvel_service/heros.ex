@@ -236,6 +236,31 @@ defmodule MarvelService.Hero do
     |> Repo.all()
   end
 
+  defp get_hero_comic_ids(hero_id) do
+    Comic
+    |> join(:left, [c], hc in HerosComics, on: c.id == hc.comic_id)
+    |> where([_c, hc], hc.hero_id == ^hero_id)
+    |> select([c, _hc], c.id)
+    |> Repo.all()
+  end
+
+  defp get_hero_secundary_heroes(comic_ids) do
+    Hero
+    |> join(:left, [h], hc in HerosComics, on: h.id == hc.hero_id)
+    |> join(:left, [h, hc], c in Comic, on: hc.comic_id == c.id)
+    |> where([_h, hc, _c], hc.comic_id in ^comic_ids)
+    |> select([h, _hc, _c], %{character: h.name, id: h.id})
+    |> Repo.all()
+  end
+
+  defp get_hero_comics(hero_id) do
+    HerosComics
+    |> join(:left, [hc], c in Comic, on: hc.comic_id == c.id)
+    |> where([hc, c], hc.hero_id == ^hero_id)
+    |> select([_hc, c], c.name)
+    |> Repo.all()
+  end
+
   @spec get_hero_info(Hero.t(), String.t() | nil) ::
           {:ok, Map.t()}
   def get_hero_info(hero, "creators") do
@@ -248,15 +273,35 @@ defmodule MarvelService.Hero do
   end
 
   def get_hero_info(hero, "heros") do
-    {:ok, {}}
+    hero_comics = get_hero_comic_ids(hero.id)
+
+    secundary_heroes = get_hero_secundary_heroes(hero_comics)
+
+    secundary_heros_comics =
+      secundary_heroes
+      |> Enum.map(fn shero ->
+        comics = get_hero_comics(shero.id)
+
+        %{
+          character: shero.character,
+          comics: comics
+        }
+      end)
+
+    map_hero = Map.merge(hero, %{characters: secundary_heros_comics})
+
+    {:ok, map_hero}
   end
 
-  def get_hero_info(hero, type_action \\ "all") do
-    creators =
-      get_hero_creators(hero.id)
-      |> Enum.group_by(& &1.role)
+  def get_hero_info(hero, _) do
+    {:ok, creators} = get_hero_info(hero, "creators")
 
-    map_hero = Map.merge(hero, creators)
-    {:ok, {}}
+    {:ok, heros} = get_hero_info(hero, "heros")
+
+    map_hero =
+      creators
+      |> Map.merge(heros)
+
+    {:ok, map_hero}
   end
 end
