@@ -1,17 +1,15 @@
 defmodule MarvelServiceWeb.Api.V1.HerosView do
   use MarvelServiceWeb, :view
 
-  def render("show.json", %{hero: hero}) do
-    %{
-      data: render_one(hero, __MODULE__, "hero.json", as: :hero)
-    }
-  end
-
-  def render("hero.json", %{hero: hero}) do
+  def render("hero_creators.json", %{hero: hero}) do
     %{
       id: hero.id,
       name: hero.name,
-      last_sync: hero.last_sync
+      last_sync: hero.last_sync,
+      description: hero.description,
+      comics_amount: hero.comics_amount,
+      marvel_id: hero.marvel_id,
+      modified: hero.modified
     }
   end
 end

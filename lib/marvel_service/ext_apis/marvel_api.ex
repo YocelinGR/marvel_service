@@ -5,8 +5,6 @@ defmodule MarvelService.ExtApis.MarvelApi do
   use Tesla
   alias MarvelService.ExtApis.Utils
 
-  require Logger
-
   plug Tesla.Middleware.Logger
 
   plug Tesla.Middleware.BaseUrl,

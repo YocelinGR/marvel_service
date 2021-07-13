@@ -52,7 +52,8 @@ defmodule MarvelService.MixProject do
       {:hackney, "~> 1.8"},
       {:tds, "~> 2.1"},
       {:scrivener_ecto, "~> 2.0"},
-      {:tesla, "~> 1.4.0"}
+      {:tesla, "~> 1.4.0"},
+      {:poison, "~> 3.1"}
     ]
   end
 

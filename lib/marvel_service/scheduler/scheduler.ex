@@ -8,8 +8,6 @@ defmodule MarvelService.Scheduler do
 
   alias MarvelService.Scheduler.MarvelScheduler
 
-  require Logger
-
   @app_name :marvel_service
 
   @spec setup_jobs :: :ok

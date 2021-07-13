@@ -8,6 +8,8 @@ defmodule MarvelService.Hero do
 
   alias MarvelService.Repo
   alias MarvelService.Hero.{Hero, HerosComics}
+  alias MarvelService.Comic.Comic
+  alias MarvelService.Creator.{Creator, CreatorRole}
 
   @doc """
     Returns a list of all Heros
@@ -222,5 +224,39 @@ defmodule MarvelService.Hero do
       {:ok, heros_comics} -> {:ok, heros_comics}
       {:error, changeset} -> {:error, changeset}
     end
+  end
+
+  defp get_hero_creators(hero_id) do
+    HerosComics
+    |> where([hc], hc.hero_id == ^hero_id)
+    |> join(:left, [hc], c in Comic, on: hc.comic_id == c.id)
+    |> join(:left, [_hc, c], cr in Creator, on: c.id == cr.comic_id)
+    |> join(:left, [_hc, _c, cr], crr in CreatorRole, on: cr.creator_role_id == crr.id)
+    |> select([_hc, _c, cr, crr], %{role: crr.name, name: cr.name})
+    |> Repo.all()
+  end
+
+  @spec get_hero_info(Hero.t(), String.t() | nil) ::
+          {:ok, Map.t()}
+  def get_hero_info(hero, "creators") do
+    creators =
+      get_hero_creators(hero.id)
+      |> Enum.group_by(& &1.role)
+
+    map_hero = Map.merge(hero, creators)
+    {:ok, map_hero}
+  end
+
+  def get_hero_info(hero, "heros") do
+    {:ok, {}}
+  end
+
+  def get_hero_info(hero, type_action \\ "all") do
+    creators =
+      get_hero_creators(hero.id)
+      |> Enum.group_by(& &1.role)
+
+    map_hero = Map.merge(hero, creators)
+    {:ok, {}}
   end
 end

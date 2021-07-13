@@ -4,15 +4,21 @@ defmodule MarvelServiceWeb.Api.V1.HerosControllerSchema do
   """
   use MarvelServiceWeb, :schema
 
+  @hero_names ["ironman", "capamerica"]
+  @type_actions ["all", "creators", "heros"]
+
   @primary_key false
   embedded_schema do
-    field :id, :integer
-    field :name, :string
+    field :hero_name, :string
+    field :type_action, :string, default: ""
   end
 
-  def changeset(hero, attrs) do
-    hero
-    |> cast(attrs, [:id, :name])
-    |> validate_required([:id, :name])
+  def changeset(:get_hero, attrs) do
+    %__MODULE__{}
+    |> cast(attrs, [:hero_name, :type_action])
+    |> validate_required([:hero_name])
+    |> validate_inclusion(:hero_name, @hero_names)
+    |> validate_inclusion(:type_action, @type_actions)
+    |> set_default(:type_action, "all")
   end
 end

@@ -8,7 +8,7 @@ defmodule MarvelService.Hero.HerosComics do
   alias MarvelService.Hero.Hero
   alias MarvelService.Comic.Comic
 
-  schema "sale_payments_operations" do
+  schema "heros_comics" do
     field :is_hero_main_character, :boolean, default: false
 
     belongs_to :hero, Hero
@@ -19,8 +19,8 @@ defmodule MarvelService.Hero.HerosComics do
   end
 
   @doc false
-  def changeset(sale_payments_operations, attrs) do
-    sale_payments_operations
+  def changeset(heros_comics, attrs) do
+    heros_comics
     |> cast(attrs, [
       :is_hero_main_character,
       :hero_id,
